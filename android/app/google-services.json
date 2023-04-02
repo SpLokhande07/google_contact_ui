@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "223053642050",
+    "project_id": "my-contacts-ccf7e",
+    "storage_bucket": "my-contacts-ccf7e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223053642050:android:246cbdd798240bb45a30db",
+        "android_client_info": {
+          "package_name": "com.app.contact.contacts_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223053642050-lcaor9j29k9ghe09hummtv4180g61o6o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMQWyVZLUKCVbMFTcpmPacoNrXz8LdvWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223053642050-lcaor9j29k9ghe09hummtv4180g61o6o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

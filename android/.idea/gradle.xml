@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$USER_HOME$/contacts_app/android" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/cloud_firestore-4.5.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/file_picker-5.2.6/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_auth-4.4.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_core-2.9.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_storage-11.1.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.9/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/fluttertoast-8.2.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_sign_in_android-6.1.8/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider_android-2.0.24/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/permission_handler_android-10.2.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/sqflite-2.2.6/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/url_launcher_android-6.0.26/android" />
+            <option value="$USER_HOME$/contacts_app/android" />
+            <option value="$USER_HOME$/contacts_app/android/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
