@@ -68,7 +68,7 @@ class UserTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HText(title: "${contactModel.name}", fontSize: 14.sp),
+              HText(title: "${contactModel.name}"),
               if (contactModel.number!.isNotEmpty ||
                   contactModel.email!.isNotEmpty)
                 HText(

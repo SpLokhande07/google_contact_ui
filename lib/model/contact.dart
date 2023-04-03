@@ -34,6 +34,7 @@ class ContactModel {
   String? number;
   String? email;
   String? birthDate;
+  String? createdBy;
 
   ContactModel(
       {this.birthDate = "",
@@ -41,6 +42,7 @@ class ContactModel {
       this.id = "",
       this.name = "",
       this.img = "",
+      this.createdBy = "",
       this.number = ""});
 
   factory ContactModel.getCurrentUserInfo() {
@@ -50,33 +52,35 @@ class ContactModel {
       img: FirebaseAuth.instance.currentUser!.photoURL ?? "",
       name: FirebaseAuth.instance.currentUser!.displayName ?? "",
       email: FirebaseAuth.instance.currentUser!.email ?? "",
+      createdBy: FirebaseAuth.instance.currentUser!.uid,
     );
   }
 
   fromJson(Map<String, dynamic> json, [String? id]) {
     return ContactModel(
-      id: json[id] ?? id,
+      id: json["id"] ?? id,
       number: json["number"] ?? "",
       img: json['img'] ?? "",
-      name: json['firstName'] ?? "",
+      name: json['name'] ?? "",
       email: json['email'] ?? '',
       birthDate: json['birthdate'] ?? "",
+      createdBy: json['createdBy'] ?? "",
     );
   }
 
   toJson(ContactModel model) {
     return {
-      "firstName": model.name,
+      "name": model.name,
       "email": model.email,
       "birthDate": model.birthDate,
       "img": model.img,
-      "number": model.number
+      "number": model.number,
+      "createdBy": FirebaseAuth.instance.currentUser!.uid
     };
   }
 
   copyWith(
-      {String? firstName,
-      String? lastName,
+      {String? name,
       String? img,
       String? number,
       String? email,
@@ -84,7 +88,7 @@ class ContactModel {
     return ContactModel(
         birthDate: birthDate ?? this.birthDate,
         email: email ?? this.email,
-        name: firstName ?? this.name,
+        name: name ?? this.name,
         img: this.img,
         number: this.number);
   }

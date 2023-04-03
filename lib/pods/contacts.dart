@@ -40,19 +40,115 @@ class ContactPod extends StateNotifier<MyContacts> {
     }
   }
 
+  bool validateContact() {
+    bool val = true;
+
+    ContactModel model = state.selectedContactDetail!;
+    if (model.number!.isEmpty && model.name!.isEmpty) {
+      val = false;
+    }
+    return val;
+  }
+
+  selectDate(context) async {
+    DateTime? pickedDate = await showDatePicker(
+        context: context, //context of current state
+        initialDate: DateTime(DateTime.now().year - 5),
+        firstDate: DateTime(DateTime.now().year -
+            100), //DateTime.now() - not to allow to choose before today.
+        lastDate: DateTime.now());
+
+    if (pickedDate != null) {
+      String formattedDate = DateFormat('dd MMM yyyy').format(pickedDate);
+      dob.text = formattedDate;
+      _contactModel = state.selectedContactDetail!;
+      _contactModel.birthDate = formattedDate;
+      state = state.copyWith(
+          date: formattedDate, selectedContactDetail: _contactModel);
+    } else {
+      // return "";
+    }
+  }
+
+  selectImage() async {
+    _contactModel = state.selectedContactDetail!;
+    // var status = await Permission.storage.status;
+    // if (status.isDenied) {
+    //   await Permission.storage.request();
+    // }
+    PlatformFile? file;
+    final image = await FilePicker.platform.pickFiles();
+    if (image != null) {
+      file = image.files.first;
+      _contactModel.img = file.path;
+      state = state.copyWith(selectedContactDetail: _contactModel);
+    }
+  }
+
+  Future<String?> uploadImage(context, String id) async {
+    try {
+      String path = state.selectedContactDetail!.id ==
+              FirebaseAuth.instance.currentUser!.uid
+          ? "$colContact/${FirebaseAuth.instance.currentUser!.uid}/profile.jpg"
+          : "$colContact/${FirebaseAuth.instance.currentUser!.uid}/${id}/profile.jpg";
+      // Directory appDocDir = await getApplicationDocumentsDirectory();
+      // String filePath = '${appDocDir.absolute}/${state.imagePath}';
+      var storage = firebaseStorage.ref().child(path);
+      File file = File(state.selectedContactDetail!.img!);
+      var uploadTask = storage.putFile(file);
+
+      var data = await uploadTask.whenComplete(() {});
+      final downloadUrl = await data.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      loader.hideLoader();
+      showToast("Unable to update image");
+    }
+  }
+
+  reset() {
+    dob.clear();
+    state = state.copyWith(
+      date: "",
+      selectedContactDetail: ContactModel(
+          name: "", email: "", birthDate: "", id: "", img: "", number: ""),
+    );
+  }
+
+  resetData() {
+    dob.clear();
+    state = state.copyWith(
+      date: "",
+      contacts: [],
+      searchedContacts: [],
+      selectedContactDetail: ContactModel(
+          name: "", email: "", birthDate: "", id: "", img: "", number: ""),
+    );
+  }
+
+  ///API Calls
   Future fetchContact() async {
     List<ContactModel> contactList = [];
-    QuerySnapshot querySnapshot =
-        await firestore.collection(colContact).orderBy("firstName").get();
-    for (int i = 0; i < querySnapshot.docs.length; i++) {
-      print(querySnapshot.docs[i].data());
-      ContactModel model = ContactModel();
-      contactList.add(model.fromJson(
-          querySnapshot.docs[i].data() as Map<String, dynamic>,
-          querySnapshot.docs[i].id));
+    try {
+      contactList = await firestore
+          .collection(colContact)
+          .where("createdBy",
+              isEqualTo: FirebaseAuth.instance.currentUser!.uid.toString())
+          .orderBy("name")
+          .get()
+          .then((querySnapshot) async {
+        for (int i = 0; i < querySnapshot.docs.length; i++) {
+          ContactModel model = ContactModel();
+          contactList.add(model.fromJson(
+              querySnapshot.docs[i].data(), querySnapshot.docs[i].id));
+        }
+        return contactList;
+      });
+      state =
+          state.copyWith(contacts: contactList, searchedContacts: contactList);
+    } catch (e) {
+      debugPrint(e.toString());
     }
-    state =
-        state.copyWith(contacts: contactList, searchedContacts: contactList);
   }
 
   searchContact(String val) {
@@ -70,16 +166,6 @@ class ContactPod extends StateNotifier<MyContacts> {
       contactList = state.contacts!;
     }
     state = state.copyWith(searchedContacts: contactList);
-  }
-
-  bool validateContact() {
-    bool val = true;
-
-    ContactModel model = state.selectedContactDetail!;
-    if (model.number!.isEmpty && model.name!.isEmpty) {
-      val = false;
-    }
-    return val;
   }
 
   Future addUpdateContact(BuildContext context) async {
@@ -150,70 +236,5 @@ class ContactPod extends StateNotifier<MyContacts> {
     } catch (e) {
       loader.hideLoader();
     }
-  }
-
-  selectDate(context) async {
-    DateTime? pickedDate = await showDatePicker(
-        context: context, //context of current state
-        initialDate: DateTime(DateTime.now().year - 5),
-        firstDate: DateTime(DateTime.now().year -
-            100), //DateTime.now() - not to allow to choose before today.
-        lastDate: DateTime.now());
-
-    if (pickedDate != null) {
-      String formattedDate = DateFormat('dd MMM yyyy').format(pickedDate);
-      dob.text = formattedDate;
-      _contactModel = state.selectedContactDetail!;
-      _contactModel.birthDate = formattedDate;
-      state = state.copyWith(
-          date: formattedDate, selectedContactDetail: _contactModel);
-    } else {
-      // return "";
-    }
-  }
-
-  selectImage() async {
-    _contactModel = state.selectedContactDetail!;
-    // var status = await Permission.storage.status;
-    // if (status.isDenied) {
-    //   await Permission.storage.request();
-    // }
-    PlatformFile? file;
-    final image = await FilePicker.platform.pickFiles();
-    if (image != null) {
-      file = image.files.first;
-      _contactModel.img = file.path;
-      state = state.copyWith(selectedContactDetail: _contactModel);
-    }
-  }
-
-  Future<String?> uploadImage(context, String id) async {
-    try {
-      String path = state.selectedContactDetail!.id ==
-              FirebaseAuth.instance.currentUser!.uid
-          ? "$colContact/${FirebaseAuth.instance.currentUser!.uid}/profile.jpg"
-          : "$colContact/${FirebaseAuth.instance.currentUser!.uid}/${id}/profile.jpg";
-      // Directory appDocDir = await getApplicationDocumentsDirectory();
-      // String filePath = '${appDocDir.absolute}/${state.imagePath}';
-      var storage = firebaseStorage.ref().child(path);
-      File file = File(state.selectedContactDetail!.img!);
-      var uploadTask = storage.putFile(file);
-
-      var data = await uploadTask.whenComplete(() {});
-      final downloadUrl = await data.ref.getDownloadURL();
-      return downloadUrl;
-    } catch (e) {
-      loader.hideLoader();
-      showToast("Unable to update image");
-    }
-  }
-
-  reset() {
-    dob.clear();
-    state = state.copyWith(
-      date: "",
-      selectedContactDetail: ContactModel(
-          name: "", email: "", birthDate: "", id: "", img: "", number: ""),
-    );
   }
 }

@@ -47,8 +47,8 @@ class CircularImage extends StatelessWidget {
             : imgUrl.isNotEmpty
                 ? Image.file(File(imgUrl), fit: BoxFit.cover)
                 : Container(
-                    height: 17.h,
-                    width: 17.h,
+                    height: height ?? 5.h,
+                    width: width ?? 5.h,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: kSecondaryColor.withOpacity(0.4)),

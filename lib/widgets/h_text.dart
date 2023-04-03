@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:contacts_app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,7 +26,7 @@ class HText extends StatelessWidget {
         style: GoogleFonts.roboto(
           color: color ?? kFontColor,
           fontWeight: fontWeight ?? FontWeight.normal,
-          fontSize: fontSize ?? 14.sp,
+          fontSize: fontSize ?? (Platform.isAndroid ? 12.sp : 13.sp),
         ));
   }
 }

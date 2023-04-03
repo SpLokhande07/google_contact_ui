@@ -1,3 +1,5 @@
+import 'package:contacts_app/constants.dart';
+import 'package:contacts_app/pods/contacts.dart';
 import 'package:contacts_app/splash_screen.dart';
 import 'package:contacts_app/view/login.dart';
 import 'package:contacts_app/widgets/loader.dart';
@@ -44,7 +46,9 @@ class AuthPod extends ChangeNotifier {
 
   logout(context) async {
     loader.showLoader(context);
+    await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut().then((value) {
+      ref.read(contactPods.notifier).resetData();
       loader.hideLoader();
       Navigator.pushAndRemoveUntil(
           context,

@@ -26,8 +26,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // TODO: implement initState
     super.initState();
     Future.delayed(
-      const Duration(milliseconds: 100),
-      () => ref.read(contactPods.notifier).fetchContact(),
+      const Duration(milliseconds: 50),
+      () {
+        ref.read(contactPods.notifier).fetchContact();
+      },
     );
   }
 

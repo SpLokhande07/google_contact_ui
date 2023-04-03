@@ -191,7 +191,7 @@ class _AddContactState extends ConsumerState<AddContact> {
               child: Center(
                   child: HText(
                 title: "Save",
-                color: kPrimaryColor,
+                color: kFontColor,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w700,
               )),
