@@ -59,48 +59,63 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           child: HText(title: "No contact to display"),
                         ),
                       )
-                    : SliverAnimatedList(
-                        initialItemCount: contactPod.searchedContacts!.length,
-                        itemBuilder: (_, i, animation) {
-                          return ContactTile(
-                            onTap: () {
-                              contactPod.selectedContactDetail =
-                                  contactPod.searchedContacts![i];
+                    : SliverList(
+                        // key: ref.read(contactPods.notifier).searchContactKey,
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => ContactDetail(
-                                          // contactModel:
-                                          //     contactPod.searchedContacts![i],
-                                          // isNew: false,
-                                          )));
-                            },
-                            type: TileType.contactInfo,
-                            contactModel: contactPod.searchedContacts![i],
-                            widget: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                if (contactPod
-                                    .searchedContacts![i].number!.isNotEmpty)
-                                  GestureDetector(
-                                    onTap: () {
-                                      launchUrl(Uri.parse(
-                                          "tel:${contactPod.searchedContacts![i].number!}"));
-                                    },
-                                    child: CircularIcon(
-                                      icon: Icons.call,
-                                      color: Colors.green,
-                                    ),
+                        // itemC:
+                        //     ref.read(contactPods).searchedContacts!.length,
+                        delegate:
+                            SliverChildListDelegate([
+                         SingleChildScrollView(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: contactPod.searchedContacts!.length,
+                              itemBuilder: (context, i) {
+                                return ContactTile(
+                                  onTap: () {
+                                    contactPod.selectedContactDetail =
+                                        contactPod.searchedContacts![i];
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => ContactDetail(
+                                                // contactModel:
+                                                //     contactPod.searchedContacts![i],
+                                                // isNew: false,
+                                                )));
+                                  },
+                                  type: TileType.contactInfo,
+                                  contactModel: ref
+                                      .read(contactPods)
+                                      .searchedContacts![i],
+                                  widget: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      if (contactPod.searchedContacts![i]
+                                          .number!.isNotEmpty)
+                                        GestureDetector(
+                                          onTap: () {
+                                            launchUrl(Uri.parse(
+                                                "tel:${contactPod.searchedContacts![i].number!}"));
+                                          },
+                                          child: CircularIcon(
+                                            icon: Icons.call,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      SizedBox(
+                                        width: 4.w,
+                                      ),
+                                    ],
                                   ),
-                                SizedBox(
-                                  width: 4.w,
-                                ),
-                              ],
-                            ),
-                          );
-                        })
+                                );
+                              }),
+                        )]
+                      ))
             ],
           ),
         ),

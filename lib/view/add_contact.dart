@@ -70,7 +70,7 @@ class _AddContactState extends ConsumerState<AddContact> {
                           color: kPrimaryColor,
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +161,7 @@ class _AddContactState extends ConsumerState<AddContact> {
                   (route) => false);
             }
           },
-          child: Icon(Icons.clear, color: kFontColor),
+          child: const Icon(Icons.clear, color: kFontColor),
         ),
         backgroundColor: kPrimaryColor,
         elevation: 0,
@@ -244,7 +244,7 @@ class _AddContactState extends ConsumerState<AddContact> {
                       SizedBox(
                         height: 3.h,
                       ),
-                      HText(title: "Add/Update photo")
+                      HText(title: widget.isNew ? "Add photo" : "Update photo")
                     ],
                   ),
                 ),
@@ -264,9 +264,32 @@ class _AddContactState extends ConsumerState<AddContact> {
                 controller: phoneNumber,
                 hint: "Mobile number",
                 prefixIcon: Icons.phone,
+                validator: (val) {
+                  // RegExp reg = RegExp(r"^([7-9]){10}");
+                  // bool isValid = reg.hasMatch(val!);
+                  // if (val.length == 10 && isValid) {
+                  //   contactModel.number = val;
+                  // }
+                  if (val!.length == 10) {
+                    bool isValid = true;
+                    int firstDigit = int.parse(val.toString().split('')[0]);
+                    if (firstDigit < 7 && firstDigit > 9) {
+                      isValid = false;
+                    }
+                    if (!isValid) {
+                      return "Invalid mobile number";
+                    } else {
+                      return null;
+                    }
+                  }
+                  return "Invalid mobile number";
+                },
                 inputType: TextInputType.phone,
                 onChanged: (val) {
-                  contactModel.number = val;
+                  // RegExp reg = RegExp(r"^([7-9]){10}");
+                  // if (val.length == 10 ) {
+                  //   contactModel.number = val;
+                  // }
                 },
               ),
               SizedBox(
@@ -284,7 +307,7 @@ class _AddContactState extends ConsumerState<AddContact> {
               SizedBox(
                 height: 2.h,
               ),
-              DateFormField(),
+              const DateFormField(),
               SizedBox(
                 height: 2.h,
               ),

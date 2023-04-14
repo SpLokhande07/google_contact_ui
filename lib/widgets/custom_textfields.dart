@@ -36,7 +36,6 @@ class _SearchBarState extends ConsumerState<SearchBar> {
                   ref.read(contactPods.notifier).searchContact(val);
                 },
                 decoration: InputDecoration(
-                    // labelStyle: TextStyle(color: kFontColor),
                     fillColor: kSecondaryColor,
                     border: InputBorder.none,
                     prefixIcon:

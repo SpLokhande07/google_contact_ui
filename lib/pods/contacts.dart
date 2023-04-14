@@ -22,7 +22,8 @@ class ContactPod extends StateNotifier<MyContacts> {
   ContactModel _contactModel = ContactModel();
   TextEditingController dob = TextEditingController();
   Loader loader = Loader();
-
+  final GlobalKey<SliverAnimatedListState> searchContactKey =
+      GlobalKey<SliverAnimatedListState>();
   String getImagePath(String id) {
     try {
       String myContactImagePath =
@@ -153,18 +154,21 @@ class ContactPod extends StateNotifier<MyContacts> {
 
   searchContact(String val) {
     List<ContactModel> contactList = [];
+    state = state.copyWith(searchedContacts: []);
     List<ContactModel> list = state.contacts!;
     if (val.isNotEmpty) {
       for (int i = 0; i < list.length; i++) {
         if (list[i].name!.contains(val) ||
             list[i].email!.contains(val) ||
             list[i].number!.contains(val)) {
+          // searchContactKey.currentState!.insertItem(i);
           contactList.add(list[i]);
         }
       }
     } else {
       contactList = state.contacts!;
     }
+
     state = state.copyWith(searchedContacts: contactList);
   }
 
@@ -194,7 +198,10 @@ class ContactPod extends StateNotifier<MyContacts> {
           .doc(id)
           .set(contactModel.toJson(contactModel))
           .then((value) {
-        list.add(contactModel);
+        if (contactModel.img!.isNotEmpty &&
+            (!contactModel.img!.contains("http"))) {
+          list.add(contactModel);
+        }
         state = state.copyWith(
           contacts: list,
         );
@@ -210,10 +217,12 @@ class ContactPod extends StateNotifier<MyContacts> {
   deleteContact(context, String id) async {
     List<ContactModel> contactList = state.contacts!;
     try {
+      ContactModel model =
+          state.contacts!.firstWhere((element) => element.id == id);
       loader.showLoader(context);
-      String path = getImagePath(id);
-      if (path.isNotEmpty) {
-        await firebaseStorage.ref(path).delete().catchError((_, __) {
+      // String path = getImagePath(id);
+      if (model.img!.isNotEmpty) {
+        await firebaseStorage.ref(model.img!).delete().catchError((_, __) {
           showToast(
             "Something went wrong",
           );
@@ -228,6 +237,7 @@ class ContactPod extends StateNotifier<MyContacts> {
         showToast(
           "Contact deleted",
         );
+        Navigator.pop(context);
       });
     } on FirebaseException catch (e) {
       // Caught an exception from Firebase.
