@@ -105,115 +105,93 @@ class _ContactDetailState extends ConsumerState<ContactDetail> {
                 ),
               ),
             ),
-            // const Divider(
-            //   color: kHintColor,
-            //   thickness: 0.4,
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     children: [
-            //       if (contactPod.selectedContactDetail!.number!.isNotEmpty)
-            //         customRow(
-            //             icon: Icons.call_outlined, title: "Call", isRow: false),
-            //       if (contactPod.selectedContactDetail!.number!.isNotEmpty)
-            //         SizedBox(
-            //           width: 10.w,
-            //         ),
-            //       customRow(
-            //           icon: Icons.edit_outlined, title: "Edit", isRow: false),
-            //       SizedBox(
-            //         width: 3.w,
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // const Divider(
-            //   color: kHintColor,
-            //   thickness: 0.4,
-            // ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                height: 25.h,
-                width: 100.w,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    color: kFontColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(15)),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HText(
-                      title: "Contact Info",
-                      color: kFontColor,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        if (contactPod.selectedContactDetail!.number!.isEmpty) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => AddContact(
-                                        contactModel:
-                                            contactPod.selectedContactDetail,
-                                        isNew: false,
-                                      )));
-                        } else {
-                          launchUrl(Uri.parse(
-                              "tel:${contactPod.selectedContactDetail!.number!}"));
-                        }
-                      },
-                      child: contactPod.selectedContactDetail!.number!.isEmpty
-                          ? customRow(
-                              title: "Add phone number",
-                              icon: Icons.call_outlined)
-                          : customTile(
-                              title: contactPod.selectedContactDetail!.number!,
-                              icon: Icons.call_outlined,
-                              type: "Mobile"),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        if (contactPod.selectedContactDetail!.number!.isEmpty) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => AddContact(
-                                        contactModel:
-                                            contactPod.selectedContactDetail,
-                                        isNew: false,
-                                      )));
-                        }
-                      },
-                      child: contactPod.selectedContactDetail!.email!.isEmpty
-                          ? customRow(
-                              title: "Add email", icon: Icons.email_outlined)
-                          : customTile(
-                              title: contactPod.selectedContactDetail!.email!,
-                              icon: Icons.email_outlined,
-                              type: "Email"),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    if (contactPod.selectedContactDetail!.birthDate!.isNotEmpty)
-                      customTile(
-                          title: contactPod.selectedContactDetail!.birthDate!,
-                          icon: Icons.date_range_outlined,
-                          type: "DOB"),
-                  ],
+            Flexible(
+              fit: FlexFit.loose,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  height: 25.h,
+                  width: 100.w,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                      color: kFontColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HText(
+                        title: "Contact Info",
+                        color: kFontColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (contactPod
+                              .selectedContactDetail!.number!.isEmpty) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => AddContact(
+                                          contactModel:
+                                              contactPod.selectedContactDetail,
+                                          isNew: false,
+                                        )));
+                          } else {
+                            launchUrl(Uri.parse(
+                                "tel:${contactPod.selectedContactDetail!.number!}"));
+                          }
+                        },
+                        child: contactPod.selectedContactDetail!.number!.isEmpty
+                            ? customRow(
+                                title: "Add phone number",
+                                icon: Icons.call_outlined)
+                            : customTile(
+                                title:
+                                    contactPod.selectedContactDetail!.number!,
+                                icon: Icons.call_outlined,
+                                type: "Mobile"),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (contactPod
+                              .selectedContactDetail!.number!.isEmpty) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => AddContact(
+                                          contactModel:
+                                              contactPod.selectedContactDetail,
+                                          isNew: false,
+                                        )));
+                          }
+                        },
+                        child: contactPod.selectedContactDetail!.email!.isEmpty
+                            ? customRow(
+                                title: "Add email", icon: Icons.email_outlined)
+                            : customTile(
+                                title: contactPod.selectedContactDetail!.email!,
+                                icon: Icons.email_outlined,
+                                type: "Email"),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      if (contactPod
+                          .selectedContactDetail!.birthDate!.isNotEmpty)
+                        customTile(
+                            title: contactPod.selectedContactDetail!.birthDate!,
+                            icon: Icons.date_range_outlined,
+                            type: "DOB"),
+                    ],
+                  ),
                 ),
               ),
             )
