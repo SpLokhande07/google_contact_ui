@@ -172,7 +172,7 @@ class ContactPod extends StateNotifier<MyContacts> {
     state = state.copyWith(searchedContacts: contactList);
   }
 
-  Future addUpdateContact(BuildContext context) async {
+  Future addUpdateContact(BuildContext context, bool isUpdate) async {
     try {
       String id = "";
       List<ContactModel> list = state.contacts!;
@@ -198,9 +198,11 @@ class ContactPod extends StateNotifier<MyContacts> {
           .doc(id)
           .set(contactModel.toJson(contactModel))
           .then((value) {
-        if (contactModel.img!.isNotEmpty &&
-            (!contactModel.img!.contains("http"))) {
+        if (!isUpdate) {
           list.add(contactModel);
+        } else {
+          int i = list.indexWhere((element) => element.id == id);
+          list[i] = contactModel;
         }
         state = state.copyWith(
           contacts: list,

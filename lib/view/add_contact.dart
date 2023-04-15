@@ -119,7 +119,8 @@ class _AddContactState extends ConsumerState<AddContact> {
                                         } else {
                                           FocusScope.of(context).unfocus();
                                           await contactPodNotifier
-                                              .addUpdateContact(context)
+                                              .addUpdateContact(
+                                                  context, widget.isNew)
                                               .then((value) =>
                                                   Navigator.pushAndRemoveUntil(
                                                       context,
@@ -175,8 +176,9 @@ class _AddContactState extends ConsumerState<AddContact> {
               if (!val) {
                 showToast("Contact must have name or number");
               } else {
-                await contactPodNotifier.addUpdateContact(context).then(
-                    (value) => Navigator.pushAndRemoveUntil(
+                await contactPodNotifier
+                    .addUpdateContact(context, widget.isNew)
+                    .then((value) => Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (_) => const HomeScreen()),
                         (route) => false));
