@@ -172,7 +172,7 @@ class ContactPod extends StateNotifier<MyContacts> {
     state = state.copyWith(searchedContacts: contactList);
   }
 
-  Future addUpdateContact(BuildContext context, bool isUpdate) async {
+  Future addUpdateContact(BuildContext context, bool isNew) async {
     try {
       String id = "";
       List<ContactModel> list = state.contacts!;
@@ -197,8 +197,9 @@ class ContactPod extends StateNotifier<MyContacts> {
           .collection(colContact)
           .doc(id)
           .set(contactModel.toJson(contactModel))
+          .onError((error, stackTrace) => debugPrint(error.toString()))
           .then((value) {
-        if (!isUpdate) {
+        if (isNew) {
           list.add(contactModel);
         } else {
           int i = list.indexWhere((element) => element.id == id);
